@@ -35,7 +35,7 @@ async function sendEmail(to: string, link: string): Promise<void> {
   const html = `<!doctype html>
 <html><body style="margin:0;background:#0a0b0e;font-family:ui-sans-serif,system-ui,sans-serif;color:#e8e6e3">
   <div style="max-width:520px;margin:0 auto;padding:48px 24px">
-    <p style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#8b8781;margin:0 0 24px">Lolo AI</p>
+    <p style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#8b8781;margin:0 0 24px">Codecodelolo.ai</p>
     <h1 style="font-size:26px;line-height:1.3;margin:0 0 12px;font-weight:500">Masuk ke workspace lo</h1>
     <p style="font-size:15px;line-height:1.7;color:#a9a5a0;margin:0 0 28px">
       Tombol di bawah berlaku sekali dan kedaluwarsa dalam ${env.MAGIC_LINK_TTL_MINUTES} menit.
@@ -63,7 +63,7 @@ async function sendEmail(to: string, link: string): Promise<void> {
     body: JSON.stringify({
       from: env.MAIL_FROM,
       to: [to],
-      subject: "Masuk ke Lolo AI",
+      subject: "Masuk ke Codecodelolo.ai",
       html,
     }),
   });
