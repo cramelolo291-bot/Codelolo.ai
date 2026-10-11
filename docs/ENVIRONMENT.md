@@ -4,7 +4,7 @@ Everything the server reads. Copy the block below into a file named `.env` in
 the project root. **Never commit it.**
 
 ```bash
-cp docs/ENVIRONMENT.md .env   # then delete everything above this line
+cp .env.example .env   # edit .env and set the values you need
 ```
 
 Or just create `.env` by hand and paste the contents of the code block in
