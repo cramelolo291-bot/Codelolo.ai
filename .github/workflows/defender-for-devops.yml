@@ -18,6 +18,10 @@
 
 name: "Microsoft Defender For Devops"
 
+permissions:
+  contents: read
+  security-events: write
+
 on:
   push:
     branches: [ "main" ]
@@ -42,6 +46,9 @@ jobs:
       uses: microsoft/security-devops-action@v1.6.0
       id: msdo
     - name: Upload results to Security tab
-      uses: github/codeql-action/upload-sarif@v3
+      # Keep the static analysis job green when repository code-scanning upload
+      # is unavailable (for example, when the repo is not onboarded to the integration).
+      continue-on-error: true
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: ${{ steps.msdo.outputs.sarifFile }}
