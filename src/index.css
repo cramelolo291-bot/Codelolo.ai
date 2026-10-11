@@ -68,48 +68,39 @@
    mode carries a faint violet cast so the two modes read as one product rather
    than as two skins. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --radius: 0.875rem;
 
-  /* Four greys on white. Steps stay close enough to read as one material. */
-  --bg: #ffffff;
-  --bg-2: #f7f7f8;
-  --bg-3: #f1f1f3;
-  --bg-deep: #ececed;
-  --surface-1: #ffffff;
-  --surface-2: #f4f4f6;
-  --surface-3: #eaeaed;
+  /* Default theme: charcoal grey mixed with black. */
+  --bg: #17191d;
+  --bg-2: #141619;
+  --bg-3: #202329;
+  --bg-deep: #111316;
+  --surface-1: #1c1f24;
+  --surface-2: #24282f;
+  --surface-3: #2d323a;
 
-  --text-1: #16161a;
-  --text-2: #45454e;
-  /* Every tier below clears 4.5:1 against the worst surface it sits on,
-     including #eaeaed. A four-step grey ramp cannot all clear 4.5:1 and keep
-     its old spread, so the steps are tighter now and the hierarchy is carried
-     by size and weight instead of by falling below AA. */
-  --text-3: #54545f;
-  --text-4: #66666f;
+  --text-1: #e5e7eb;
+  --text-2: #c2c6ce;
+  --text-3: #a5abb5;
+  --text-4: #858c98;
 
-  /* Hairlines, not borders. 8% black reads as an edge of a material. */
-  --line: rgba(22, 22, 26, 0.08);
-  --line-strong: rgba(22, 22, 26, 0.14);
-  --spec: rgba(255, 255, 255, 0.9);
+  --line: rgba(229, 231, 235, 0.08);
+  --line-strong: rgba(229, 231, 235, 0.15);
+  --spec: rgba(255, 255, 255, 0.045);
 
-  /* Light mode has no hue: the accent is ink. Solid near-black on white is
-     the whole look. */
-  --accent-warm: #16161a;
-  --accent-warm-hover: #2f2f37;
-  --accent-warm-soft: rgba(22, 22, 26, 0.07);
-  --accent-cool: #565678;
-  --accent-cool-soft: rgba(86, 86, 120, 0.1);
-  --ember-rgb: 22, 22, 26;
-  --violet-rgb: 109, 74, 216;
-  /* The two materials that carry light. Both are black-tinted in light mode so
-     they are visible against a white card, and white-tinted in dark mode. */
-  --glass-rgb: 22, 22, 26;
-  --sheen-rgb: 22, 22, 26;
-  --shadow-soft: rgba(22, 22, 26, 0.1);
-  --shadow-deep: rgba(22, 22, 26, 0.16);
-  --vignette: rgba(22, 22, 26, 0.14);
+  --accent-warm: #d1d5db;
+  --accent-warm-hover: #f3f4f6;
+  --accent-warm-soft: rgba(209, 213, 219, 0.12);
+  --accent-cool: #aeb6c2;
+  --accent-cool-soft: rgba(174, 182, 194, 0.12);
+  --ember-rgb: 209, 213, 219;
+  --violet-rgb: 174, 182, 194;
+  --glass-rgb: 255, 255, 255;
+  --sheen-rgb: 255, 255, 255;
+  --shadow-soft: rgba(0, 0, 0, 0.22);
+  --shadow-deep: rgba(0, 0, 0, 0.5);
+  --vignette: rgba(0, 0, 0, 0.24);
 
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
@@ -126,29 +117,29 @@
   --popover: var(--surface-1);
   --popover-foreground: var(--text-1);
   --primary: var(--accent-warm);
-  --primary-foreground: #ffffff;
+  --primary-foreground: #17191d;
   --secondary: var(--surface-2);
   --secondary-foreground: var(--text-1);
   --muted: var(--surface-2);
   --muted-foreground: var(--text-3);
   --accent: var(--accent-warm-soft);
-  --accent-foreground: var(--accent-warm);
-  --destructive: #c0392b;
-  --border: rgba(22, 22, 26, 0.1);
-  --input: rgba(22, 22, 26, 0.14);
+  --accent-foreground: var(--text-1);
+  --destructive: #ef7468;
+  --border: rgba(229, 231, 235, 0.1);
+  --input: rgba(229, 231, 235, 0.14);
   --ring: var(--accent-warm);
-  --chart-1: #6d4ad8;
-  --chart-2: #565678;
-  --chart-3: #8a8a94;
-  --chart-4: #3f3f4a;
-  --chart-5: #b0b0b8;
+  --chart-1: #d1d5db;
+  --chart-2: #aeb6c2;
+  --chart-3: #858c98;
+  --chart-4: #c2c6ce;
+  --chart-5: #6f7783;
   --sidebar: var(--surface-1);
   --sidebar-foreground: var(--text-2);
   --sidebar-primary: var(--accent-warm);
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #17191d;
   --sidebar-accent: var(--surface-2);
   --sidebar-accent-foreground: var(--text-1);
-  --sidebar-border: rgba(22, 22, 26, 0.1);
+  --sidebar-border: rgba(229, 231, 235, 0.1);
   --sidebar-ring: var(--accent-warm);
 }
 
@@ -156,49 +147,49 @@
    the accent is not a sticker on top of a grey UI — it is the light source. */
 .dark {
   color-scheme: dark;
-  --bg: #08070c;
-  --bg-2: #06050a;
-  --bg-3: #100e18;
-  --bg-deep: #040307;
-  --surface-1: #100e17;
-  --surface-2: #17141f;
-  --surface-3: #1f1a2b;
+  --bg: #17191d;
+  --bg-2: #141619;
+  --bg-3: #202329;
+  --bg-deep: #111316;
+  --surface-1: #1c1f24;
+  --surface-2: #24282f;
+  --surface-3: #2d323a;
 
-  --text-1: #f2f0f7;
-  --text-2: #b6b1cb;
-  --text-3: #a09bba;
-  --text-4: #8782a7;
+  --text-1: #e5e7eb;
+  --text-2: #c2c6ce;
+  --text-3: #a5abb5;
+  --text-4: #858c98;
 
-  --line: rgba(242, 240, 247, 0.07);
-  --line-strong: rgba(242, 240, 247, 0.13);
-  --spec: rgba(255, 255, 255, 0.055);
+  --line: rgba(229, 231, 235, 0.08);
+  --line-strong: rgba(229, 231, 235, 0.15);
+  --spec: rgba(255, 255, 255, 0.045);
 
-  --accent-warm: #a06bff;
-  --accent-warm-hover: #b48cff;
-  --accent-warm-soft: rgba(160, 107, 255, 0.15);
-  --accent-cool: #7dd3c0;
-  --accent-cool-soft: rgba(125, 211, 192, 0.12);
-  --ember-rgb: 160, 107, 255;
-  --violet-rgb: 160, 107, 255;
+  --accent-warm: #d1d5db;
+  --accent-warm-hover: #f3f4f6;
+  --accent-warm-soft: rgba(209, 213, 219, 0.12);
+  --accent-cool: #aeb6c2;
+  --accent-cool-soft: rgba(174, 182, 194, 0.12);
+  --ember-rgb: 209, 213, 219;
+  --violet-rgb: 174, 182, 194;
   --glass-rgb: 255, 255, 255;
   --sheen-rgb: 255, 255, 255;
-  --shadow-soft: rgba(0, 0, 0, 0.4);
-  --shadow-deep: rgba(0, 0, 0, 0.9);
-  --vignette: rgba(0, 0, 0, 0.55);
+  --shadow-soft: rgba(0, 0, 0, 0.22);
+  --shadow-deep: rgba(0, 0, 0, 0.5);
+  --vignette: rgba(0, 0, 0, 0.24);
 
-  --primary-foreground: #0b0713;
-  --destructive: #d96a5a;
-  --border: rgba(242, 240, 247, 0.09);
-  --input: rgba(242, 240, 247, 0.12);
-  --accent-foreground: var(--accent-warm);
-  --chart-1: #a06bff;
-  --chart-2: #7dd3c0;
-  --chart-3: #b8a68c;
-  --chart-4: #8a9bb0;
-  --chart-5: #c9a3ff;
-  --sidebar-primary-foreground: #0b0713;
+  --primary-foreground: #17191d;
+  --destructive: #ef7468;
+  --border: rgba(229, 231, 235, 0.1);
+  --input: rgba(229, 231, 235, 0.14);
+  --accent-foreground: var(--text-1);
+  --chart-1: #d1d5db;
+  --chart-2: #aeb6c2;
+  --chart-3: #858c98;
+  --chart-4: #c2c6ce;
+  --chart-5: #6f7783;
+  --sidebar-primary-foreground: #17191d;
   --sidebar-accent: var(--surface-2);
-  --sidebar-border: rgba(242, 240, 247, 0.09);
+  --sidebar-border: rgba(229, 231, 235, 0.1);
   --sidebar-ring: var(--accent-warm);
 }
 
@@ -760,10 +751,10 @@
 :root {
   /* Stars read as grey dust in light mode — the light palette is meant to be
      hueless — and as violet in dark mode. */
-  --star-rgb: 22, 22, 26;
+  --star-rgb: 209, 213, 219;
 }
 .dark {
-  --star-rgb: 160, 107, 255;
+  --star-rgb: 209, 213, 219;
 }
 
 /* Kilat: a thin blade of light that crosses a surface once on hover. Faster
