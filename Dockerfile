@@ -8,10 +8,13 @@ FROM oven/bun:1-alpine AS build
 
 WORKDIR /app
 
-# Copied on their own so a source-only change does not re-resolve the whole
-# dependency tree on every build.
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+# This repository currently has no bun.lock. Its package-lock.json is from a
+# different template and does not match package.json, so do not use either
+# lockfile as a frozen install source here. Install from the authoritative
+# package.json; add and commit a matching bun.lock in a follow-up once generated
+# with the project's chosen Bun version.
+COPY package.json ./
+RUN bun install
 
 COPY . .
 
