@@ -49,6 +49,15 @@ COOLDOWN_MS=30000
 # How many pool accounts one request may try before giving up.
 MAX_ATTEMPTS=3
 
+# ── Hosted AI providers ──────────────────────────────────────────────────
+# OpenAI is preferred when configured. Keep the key on the backend only.
+# Get a key from https://platform.openai.com/api-keys
+# OPENAI_API_KEY=sk-...
+# OPENAI_MODEL=gpt-4.1-mini
+# Optional alternative provider; used when OpenAI is not configured or as fallback.
+# OPENROUTER_API_KEY=sk-or-...
+# OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct:free
+
 # ── OpenAI-compatible API ────────────────────────────────────────────────
 API_RATE_LIMIT=600
 API_RATE_WINDOW_MS=60000
@@ -150,6 +159,19 @@ Nothing sensitive is ever stored in the database in plain form:
 list. That prefix is not enough to use the key.
 
 A database dump contains no usable credential. Rotate anything that leaks.
+
+## OpenAI API setup
+
+For hosted AI Chat and AI Coding, set these variables on the **backend host**:
+
+```ini
+OPENAI_API_KEY=your-secret-key
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+Restart the backend after setting them. The router prefers OpenAI when the key is present, then can fall back to OpenRouter or local Ollama if those providers are configured. The key must never use a `VITE_` prefix or be committed to GitHub. OpenAI API usage is billed separately from a ChatGPT subscription; set spending limits in the OpenAI platform before sharing the app.
+
+GitHub Pages only hosts the frontend. To use OpenAI from the deployed site, set `VITE_API_URL` to a publicly reachable Codelolo backend URL and configure `OPENAI_API_KEY` on that backend host.
 
 ## Switching the UI to the real backend
 
