@@ -6,6 +6,8 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages project sites live under /<repository>/; custom domains use /. 
+  base: process.env.VITE_BASE_PATH || "/",
   plugins: [react(), vlyPlugin(), tailwindcss()],
   resolve: {
     alias: {
