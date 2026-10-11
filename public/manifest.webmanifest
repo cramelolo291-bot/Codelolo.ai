@@ -1,7 +1,7 @@
 {
-  "name": "freebuff.com application",
-  "short_name": "freebuff.com",
-  "description": "freebuff.com application",
+  "name": "Codelolo.ai",
+  "short_name": "Codelolo",
+  "description": "Codelolo AI Agent",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
