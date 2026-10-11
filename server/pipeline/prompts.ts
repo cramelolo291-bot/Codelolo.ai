@@ -94,7 +94,7 @@ export function systemPrompt(
   model: ModelDef,
   effort?: Effort,
 ): string {
-  const base = `You are ${agent.name} (${agent.tagline}), part of Lolo AI — a self-hosted agent server running on the operator's own machine.
+  const base = `You are ${agent.name} (${agent.tagline}), part of Codecodelolo.ai — a self-hosted agent server running on the operator's own machine.
 
 ${JOB}
 

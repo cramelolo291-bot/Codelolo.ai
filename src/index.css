@@ -863,7 +863,7 @@
 }
 
 
-/* LOLO.AI refinement: restrained glass surfaces, clearer hierarchy, and
+/* CODELOLO.AI refinement: restrained glass surfaces, clearer hierarchy, and
    comfortable controls across the multi-page workspace. */
 @layer components {
   .glass {
@@ -879,11 +879,17 @@
   }
 
   .panel,
-  .lift {
+  .lift,
+  .bg-surface-1 {
+    background:
+      linear-gradient(145deg, rgba(var(--glass-rgb), 0.045), rgba(var(--glass-rgb), 0.012) 62%),
+      color-mix(in srgb, var(--surface-1) 84%, transparent);
     border-color: var(--line);
     box-shadow:
       inset 0 1px 0 var(--spec),
       0 10px 30px -24px var(--shadow-deep);
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
   }
 
   .lift:hover {

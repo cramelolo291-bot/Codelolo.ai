@@ -113,7 +113,7 @@ const EFFORT_ROWS = [
 ];
 
 const origin =
-  typeof window !== "undefined" ? window.location.origin : "https://lolo.ai";
+  typeof window !== "undefined" ? window.location.origin : "https://codelolo.ai";
 
 export default function Landing() {
   return (
@@ -124,7 +124,7 @@ export default function Landing() {
           <Link to="/" className="flex items-center gap-2.5">
             <Logo />
             <span className="text-[14px] font-medium tracking-tight text-ink-1">
-              Lolo AI
+              Codelolo.ai
             </span>
           </Link>
 
@@ -303,7 +303,7 @@ export default function Landing() {
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center gap-3">
                     <span className="w-28 shrink-0 text-[13px] text-ink-1">
-                      Lolo AI
+                      Codelolo.ai
                     </span>
                     <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface-3">
                       <div className="h-full w-[3%] min-w-2 rounded-full bg-ember" />
@@ -606,7 +606,7 @@ export default function Landing() {
                 </p>
                 <div className="mt-10 flex flex-wrap justify-center gap-3">
                   <Link to="/studio/" className="btn-primary">
-                    Buka Lolo Studio
+                    Buka Codelolo Studio
                     <ArrowRight className="size-4" />
                   </Link>
                   <a
@@ -627,7 +627,7 @@ export default function Landing() {
         <div className="shell flex flex-wrap items-center justify-between gap-3">
           <span className="flex items-center gap-2.5 text-[12.5px] text-ink-4">
             <Logo className="size-[19px]" />
-            Lolo AI
+            Codelolo.ai
           </span>
           <span className="font-mono text-[10px] tracking-[0.1em] text-ink-4 uppercase">
             self-hosted gateway · nothing leaves your machine

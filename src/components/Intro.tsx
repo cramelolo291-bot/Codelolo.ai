@@ -10,13 +10,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const KEY = "lolo.intro.v1";
+const KEY = "codelolo.intro.v1";
 
 /** Choreography. The rule fills across exactly this, so progress means something. */
 const HOLD_MS = 2200;
 const WIPE_MS = 760;
 
-const WORD = ["L", "o", "l", "o", " ", "A", "I"];
+const WORD = Array.from("Codelolo.ai");
 
 function alreadyPlayed(): boolean {
   try {
@@ -112,7 +112,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       }
       onClick={finish}
       role="status"
-      aria-label="Memuat Lolo AI"
+      aria-label="Memuat Codelolo.ai"
     >
       {/* Two washes so the centre is warmer than the corners. The mark sits on
           the hot spot, which is what makes it look lit rather than pasted. */}

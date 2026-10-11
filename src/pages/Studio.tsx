@@ -134,7 +134,7 @@ export default function Studio() {
             {
               role: "system",
               content:
-                "You are the assistant inside Lolo Studio. The user is working with the browser-use/jev-ultrafast repository. Tools are invoked by the user with slash commands such as /list_files, /search_files, /open_file. Keep answers short and concrete.",
+                "You are the assistant inside Codelolo Studio. The user is working with the browser-use/jev-ultrafast repository. Tools are invoked by the user with slash commands such as /list_files, /search_files, /open_file. Keep answers short and concrete.",
             },
             ...history,
             { role: "user" as const, content: prompt },
