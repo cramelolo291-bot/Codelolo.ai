@@ -150,8 +150,8 @@ export default function Landing() {
             <Link to="/auth" className="btn-ghost hidden sm:inline-flex">
               Masuk
             </Link>
-            <Link to="/auth" className="btn-primary">
-              Mulai
+            <Link to="/studio/" className="btn-primary">
+              Buka Studio
             </Link>
           </div>
         </div>
@@ -192,8 +192,8 @@ export default function Landing() {
 
               <Reveal delay={260}>
                 <div className="mt-10 flex flex-wrap gap-3">
-                  <Link to="/auth" className="btn-primary">
-                    Lanjutkan
+                  <Link to="/studio/" className="btn-primary">
+                    Lanjutkan ke Studio
                     <ArrowRight className="size-4" />
                   </Link>
                   <Link to="/studio/" className="btn-primary">
@@ -605,8 +605,8 @@ export default function Landing() {
                   dibocorin, atau dilupain.
                 </p>
                 <div className="mt-10 flex flex-wrap justify-center gap-3">
-                  <Link to="/auth" className="btn-primary">
-                    Masuk ke Lolo
+                  <Link to="/studio/" className="btn-primary">
+                    Buka Lolo Studio
                     <ArrowRight className="size-4" />
                   </Link>
                   <a
