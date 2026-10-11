@@ -1,33 +1,38 @@
 # Codelolo.ai
 
-Codelolo AI Agent — React/Vite frontend with a Node/Hono backend.
+Public repository for the Codelolo / Lolo AI Agent project.
 
-## Development
+## Project layout
 
-- Node.js 22+
-- Install dependencies: `npm ci`
-- Frontend dev server: `npm run dev`
-- Production build: `npm run build`
-- Backend server: `npm run server`
+- `src/` — React + Vite web application
+- `server/` — API server, authentication, database, model routing, and pipeline modules
+- `web-ui/` — browser automation / agent UI
+- `scripts/` — project test and validation scripts
+- `docs/` — environment and infrastructure notes
 
-The backend needs its own runtime configuration and services (for example database/model-provider settings). Do not commit real secrets. Use environment variables in the deployment environment; `.env.keys`, real `.env` files, tokens, private keys, and credentials are intentionally excluded from this public repository.
+## Run locally
 
-## GitHub Pages / custom domain
+Requires Node.js 22+ and npm.
 
-A Pages workflow is included at `.github/workflows/deploy-pages.yml`, and `CNAME` is set to `codelolo.ai`. In GitHub repository Settings → Pages, set the build/deployment source to **GitHub Actions**. The domain will not resolve until DNS is configured at the domain registrar.
+```bash
+npm ci
+npm run dev
+```
 
-For the apex domain `codelolo.ai`, configure these A records to GitHub Pages:
-- `185.199.108.153`
-- `185.199.109.153`
-- `185.199.110.153`
-- `185.199.111.153`
+Build the web app:
 
-Optional IPv6 AAAA records:
-- `2606:50c0:8000::153`
-- `2606:50c0:8001::153`
-- `2606:50c0:8002::153`
-- `2606:50c0:8003::153`
+```bash
+npm run build
+```
 
-After DNS propagates, enable **Enforce HTTPS** in Settings → Pages.
+Run the API server separately with `npm run server`. Configure required environment variables using the documented examples before enabling server/database features.
 
-> GitHub Pages only hosts the static frontend. The API/backend and database must be deployed separately and configured before authenticated or server-backed features can work. A successful workflow and DNS configuration are still required before the custom domain is live.
+## Deployment
+
+The repository includes a GitHub Actions workflow for GitHub Pages and a `CNAME` file for `codelolo.ai`. The custom domain is live only after GitHub Pages deployment succeeds and the domain's DNS records point to GitHub Pages.
+
+## Security and migration
+
+This repository is public. Secret files such as `.env.keys`, actual `.env` files, and credential-bearing files are intentionally excluded. Do not commit API keys, tokens, private keys, database passwords, or production environment files. Use GitHub Actions secrets or a private deployment environment for credentials.
+
+Large unrelated vendor/source trees were left out of this public migration to keep the repository focused on the application and avoid copying unnecessary bundled code.
