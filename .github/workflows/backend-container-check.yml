@@ -1,0 +1,35 @@
+name: Verify backend container
+
+on:
+  push:
+    branches: [main, "chore/verify-backend-container-and-free-hosting-notes"]
+    paths:
+      - "Dockerfile"
+      - "bun.lock"
+      - "package.json"
+      - "server/**"
+      - "src/lib/**"
+      - ".github/workflows/backend-container-check.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "bun.lock"
+      - "package.json"
+      - "server/**"
+      - "src/lib/**"
+      - ".github/workflows/backend-container-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build backend runtime image
+        run: docker build --tag codelolo-api:ci .
