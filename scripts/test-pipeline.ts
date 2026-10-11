@@ -390,7 +390,7 @@ await runTurn({ ...args, prompt: "ringkas dong" });
 const sent = (lastRequest as { messages?: Array<{ content: string }> })?.messages ?? [];
 const totalChars = sent.reduce((n, m) => n + m.content.length, 0);
 check("history was truncated to fit", totalChars < 40_000, `${totalChars} chars`);
-check("the system prompt survived", sent[0]?.content.includes("Lolo AI"));
+check("the system prompt survived", sent[0]?.content.includes("You are here to BUILD things"));
 check("the newest turn survived", sent.at(-1)?.content === "ringkas dong", sent.at(-1)?.content?.slice(0, 40));
 const lastTrace = await db
   .select()
