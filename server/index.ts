@@ -70,7 +70,7 @@ async function boot() {
   }
 
   server = serve({ fetch: counted, port: env.PORT }, (info: { port: number }) => {
-    console.log(`\n  Lolo AI server → http://localhost:${info.port}`);
+    console.log(`\n  Codecodelolo.ai server → http://localhost:${info.port}`);
     console.log(`  database        ${env.DATABASE_URL.replace(/:[^:@/]+@/, ":***@")}`);
     console.log(`  ollama          ${env.OLLAMA_URL} ${ollamaUp ? "✓" : "✗"}`);
     console.log(`  openai base     ${env.APP_URL}/v1\n`);
