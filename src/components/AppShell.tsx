@@ -3,6 +3,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 import {
   Activity,
+  AppWindow,
   BarChart3,
   FolderKanban,
   Globe,
@@ -156,7 +157,7 @@ export function AppShell({
                   slashless `/web` and `/chat` are the RequireAuth-protected
                   duplicates, so linking there bounced signed-out visitors to
                   /auth and made the public pages unreachable from the nav. */}
-              <NavItem to="/web/" icon={Globe} label="Web" />
+              <NavItem to="/workspace/" icon={AppWindow} label="Workspace" />
               <NavItem to="/chat/" icon={MessagesSquare} label="Chat" />
               <NavItem to="/panel/" icon={Activity} label="Panel" />
               <NavItem to="/dashboard/" icon={BarChart3} label="Metrics" />

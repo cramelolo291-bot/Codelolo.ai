@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 
 const Landing = lazy(() => import("./pages/Landing.tsx"));
+const Workspace = lazy(() => import("./pages/Workspace.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Chat = lazy(() => import("./pages/Chat.tsx"));
 const Web = lazy(() => import("./pages/Web.tsx"));
@@ -46,8 +47,10 @@ function App() {
         <RouteSyncer />
         <Suspense fallback={<RouteLoading />}>
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/web" />} />
+            <Route path="/" element={<Workspace />} />
+            <Route path="/home" element={<Landing />} />
+            <Route path="/workspace/" element={<Workspace />} />
+            <Route path="/auth" element={<AuthPage redirectAfterAuth="/workspace" />} />
 
             {/* Public routes — read-only freebuff data, no auth, no keys. */}
             <Route path="/web/" element={<Web />} />

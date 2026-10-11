@@ -13,7 +13,7 @@
 
 import { Hono } from "hono";
 
-export type ProviderId = "ollama" | "openrouter";
+export type ProviderId = "ollama" | "openrouter" | "openai";
 
 export type ChatMessage = {
   role: "system" | "user" | "assistant";
@@ -56,6 +56,12 @@ export const DEFAULT_LOCAL_MODEL = LOCAL_MODELS[0];
 
 export type RouterConfig = {
   openrouterKey: string;
+  /** OpenAI API key. Optional; OpenAI is preferred when configured. */
+  openaiKey?: string;
+  /** OpenAI model override. */
+  openaiModel?: string;
+  /** OpenAI-compatible base URL. */
+  openaiBase?: string;
   /** Override the free-model list from the environment. */
   openrouterModel?: string;
   /** Per-provider base URL, the way 9router resolves these from a registry. */
@@ -83,8 +89,17 @@ export function selectProvider(
     };
   }
 
+  const wantOpenAI = requested?.startsWith("openai/");
   const wantOpenRouter = requested?.startsWith("openrouter/");
   const wantLocal = requested?.startsWith("ollama/") || (requested && LOCAL_MODELS.includes(requested as never));
+
+  if (wantOpenAI) {
+    if (!cfg.openaiKey) {
+      if (cfg.openrouterKey) return { provider: "openrouter", model: strip(requested!), reason: "openai needs a key; using OpenRouter" };
+      return { provider: "ollama", model: strip(requested!), reason: "openai needs a key; using local" };
+    }
+    return { provider: "openai", model: strip(requested!), reason: "explicitly requested" };
+  }
 
   if (wantOpenRouter) {
     if (!cfg.openrouterKey) {
@@ -97,16 +112,18 @@ export function selectProvider(
     return { provider: "ollama", model: strip(requested!), reason: "explicitly requested" };
   }
 
-  // Default policy: local first because it is free and private, remote only
-  // when a key is actually configured.
-  if (!cfg.openrouterKey) {
-    return { provider: "ollama", model: DEFAULT_LOCAL_MODEL, reason: "no remote key configured" };
+  // Prefer OpenAI when configured, then OpenRouter, then local Ollama.
+  if (cfg.openaiKey) {
+    return { provider: "openai", model: cfg.openaiModel ?? "gpt-4.1-mini", reason: "OpenAI key configured" };
   }
-  return {
-    provider: "openrouter",
-    model: cfg.openrouterModel ?? OPENROUTER_FREE_MODELS[0],
-    reason: "remote key configured",
-  };
+  if (cfg.openrouterKey) {
+    return {
+      provider: "openrouter",
+      model: cfg.openrouterModel ?? OPENROUTER_FREE_MODELS[0],
+      reason: "OpenRouter key configured",
+    };
+  }
+  return { provider: "ollama", model: DEFAULT_LOCAL_MODEL, reason: "no remote key configured" };
 }
 
 function strip(model: string): string {
@@ -114,12 +131,39 @@ function strip(model: string): string {
 }
 
 function defaultModelFor(cfg: RouterConfig, provider: ProviderId): string {
+  if (provider === "openai") return cfg.openaiModel ?? "gpt-4.1-mini";
   return provider === "openrouter"
     ? cfg.openrouterModel ?? OPENROUTER_FREE_MODELS[0]
     : DEFAULT_LOCAL_MODEL;
 }
 
 export type FetchLike = typeof fetch;
+
+async function callOpenAI(
+  cfg: RouterConfig,
+  model: string,
+  messages: ChatMessage[],
+  opts: { temperature?: number; max_tokens?: number },
+  doFetch: FetchLike,
+): Promise<ChatChunk> {
+  const base = cfg.openaiBase ?? "https://api.openai.com/v1";
+  const res = await doFetch(`${base}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${cfg.openaiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ model, messages, ...opts }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`openai ${res.status}: ${body.slice(0, 300)}`);
+  }
+  const json = (await res.json()) as {
+    choices?: Array<{ message?: { content?: string } }>;
+  };
+  return { provider: "openai", model, content: json.choices?.[0]?.message?.content ?? "" };
+}
 
 async function callOpenRouter(
   cfg: RouterConfig,
@@ -200,6 +244,36 @@ export async function routeChat(
   const pick = selectProvider(cfg, req.model);
   const opts = { temperature: req.temperature, max_tokens: req.max_tokens };
 
+  // OpenAI is the preferred hosted provider when a key is configured.
+  // If it fails, use OpenRouter when available, then the local Ollama runtime.
+  if (pick.provider === "openai") {
+    try {
+      const out = await callOpenAI(cfg, pick.model, req.messages, opts, doFetch);
+      return { ...out, fellBack: false, note: pick.reason };
+    } catch (primaryErr) {
+      const msg = primaryErr instanceof Error ? primaryErr.message : String(primaryErr);
+      if (cfg.openrouterKey) {
+        try {
+          const out = await callOpenRouter(cfg, defaultModelFor(cfg, "openrouter"), req.messages, opts, doFetch);
+          return { ...out, fellBack: true, note: `openai failed, fell back to openrouter` };
+        } catch (fallbackErr) {
+          try {
+            const out = await callOllama(cfg, DEFAULT_LOCAL_MODEL, req.messages, opts, doFetch);
+            return { ...out, fellBack: true, note: `openai and openrouter failed, fell back to ollama` };
+          } catch (localErr) {
+            throw new Error(`openai: ${msg} | openrouter: ${(fallbackErr as Error).message} | ollama: ${(localErr as Error).message}`);
+          }
+        }
+      }
+      try {
+        const out = await callOllama(cfg, DEFAULT_LOCAL_MODEL, req.messages, opts, doFetch);
+        return { ...out, fellBack: true, note: `openai failed, fell back to ollama` };
+      } catch (fallbackErr) {
+        throw new Error(`openai: ${msg} | ollama: ${(fallbackErr as Error).message}`);
+      }
+    }
+  }
+
   // Within OpenRouter, a retired `:free` model should not cost the whole
   // request — try the next one before giving up on the provider. 9router hit
   // exactly this with retired Claude models.
@@ -265,6 +339,7 @@ export function llmRouter(configFromEnv: () => RouterConfig) {
     const cfg = configFromEnv();
     const models = [
       ...LOCAL_MODELS.map((id) => ({ id: `ollama/${id}`, provider: "ollama" })),
+      ...(cfg.openaiKey ? [{ id: `openai/${cfg.openaiModel ?? "gpt-4.1-mini"}`, provider: "openai" }] : []),
       ...(cfg.openrouterKey ? [OPENROUTER_FREE_MODELS[0]].map((id) => ({ id: `openrouter/${id}`, provider: "openrouter" })) : []),
     ];
     return c.json({ object: "list", data: models });
