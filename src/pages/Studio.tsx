@@ -120,7 +120,7 @@ export default function Studio() {
         .filter((m): m is Extract<Msg, { role: "user" }> => m.role === "user")
         .map((m) => ({ role: "user" as const, content: m.text }))
         .slice(-8);
-      const apiBase = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\\/+$/, "");
+      const apiBase = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+$/, "");
       if (!apiBase) {
         throw new Error(
           "Backend AI belum dikonfigurasi. Situs GitHub Pages ini hanya frontend statis. Deploy server Codelolo ke hosting backend, lalu set VITE_API_URL ke URL publik backend dan build ulang. Slash commands untuk repositori publik tetap bisa dipakai."
