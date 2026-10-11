@@ -29,10 +29,17 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm install --legacy-peer-deps
+      - name: Lint
+        run: npm run lint
+      - name: Run tests
+        run: npm test
       - name: Build site
         env:
-          # Free project Pages URL until a custom domain is purchased/configured.
+          # Public Vite variables are optional. Keep the interactive mock mode
+          # until a separately hosted API is configured in repository Variables.
           VITE_BASE_PATH: /Codelolo.ai/
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_API_MODE: ${{ vars.VITE_API_MODE || 'mock' }}
         run: npm run build && cp dist/index.html dist/404.html
       - name: Configure Pages
         uses: actions/configure-pages@v5
