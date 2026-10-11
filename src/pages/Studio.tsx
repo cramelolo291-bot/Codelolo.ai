@@ -43,9 +43,9 @@ export default function Studio() {
     {
       role: "bot",
       text:
-        "Studio is wired to the live repository. Pick a tool on the left, or type a slash command — /list_files, /search_files, /open_file, /list_issues, /list_prs, /repo_stats.\n\n" +
-        "Anything else goes to the server-side model router, which picks a provider for you.\n\n" +
-        "To save a file the chat writes, wrap it in a fenced block whose first word is the path:\n```notes/findings.md\n...content...\n```",
+        "Studio preview is ready. Public-repository tools can run without an AI backend: /list_files, /search_files, /open_file, /list_issues, /list_prs, and /repo_stats.\n\n" +
+        "Free-form AI chat needs a separately deployed backend. GitHub Pages only hosts this frontend, so model replies are unavailable until VITE_API_URL points to a reachable backend.\n\n" +
+        "To save a note locally, wrap it in a fenced block whose first word is the path:\n```notes/findings.md\n...content...\n```",
     },
   ]);
   const [input, setInput] = useState("");
@@ -120,7 +120,13 @@ export default function Studio() {
         .filter((m): m is Extract<Msg, { role: "user" }> => m.role === "user")
         .map((m) => ({ role: "user" as const, content: m.text }))
         .slice(-8);
-      const res = await fetch("/llm/v1/chat/completions", {
+      const apiBase = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/+$/, "");
+      if (!apiBase) {
+        throw new Error(
+          "Backend AI belum dikonfigurasi. Situs GitHub Pages ini hanya frontend statis. Deploy server Codelolo ke hosting backend, lalu set VITE_API_URL ke URL publik backend dan build ulang. Slash commands untuk repositori publik tetap bisa dipakai."
+        );
+      }
+      const res = await fetch(`${apiBase}/llm/v1/chat/completions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -128,7 +134,7 @@ export default function Studio() {
             {
               role: "system",
               content:
-                "You are the assistant inside Lolo Studio. The user is working with the browser-use/jev-ultrafast repository. Tools are invoked by the user with slash commands such as /list_files, /search_files, /open_file. Keep answers short and concrete.",
+                "You are the assistant inside Codelolo Studio. The user is working with the browser-use/jev-ultrafast repository. Tools are invoked by the user with slash commands such as /list_files, /search_files, /open_file. Keep answers short and concrete.",
             },
             ...history,
             { role: "user" as const, content: prompt },

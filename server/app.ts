@@ -97,6 +97,8 @@ export function createApp() {
   //   * under "/api" it would sit behind the `use("*", requireAuth)` that the
   //     conversations router installs, and every call would 401.
   app.route("/llm", llmRouter(() => ({
+    openaiKey: process.env.OPENAI_API_KEY ?? "",
+    openaiModel: process.env.OPENAI_MODEL || undefined,
     openrouterKey: process.env.OPENROUTER_API_KEY ?? "",
     openrouterModel: process.env.OPENROUTER_MODEL || undefined,
   })));

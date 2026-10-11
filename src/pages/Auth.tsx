@@ -50,7 +50,7 @@ function Auth({ redirectAfterAuth = "/chat" }: { redirectAfterAuth?: string }) {
         <Link to="/" className="inline-flex items-center gap-2.5">
           <Logo />
           <span className="text-[14px] font-semibold tracking-tight text-ink-1">
-            Lolo AI
+            Codelolo.ai
           </span>
         </Link>
       </header>
