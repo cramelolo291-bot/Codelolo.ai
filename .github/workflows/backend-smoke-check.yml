@@ -1,0 +1,29 @@
+name: Backend smoke check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain missing backend URL
+        if: ${{ vars.VITE_API_URL == '' }}
+        run: |
+          echo "::notice::Backend smoke check skipped: set repository variable VITE_API_URL after deploying the backend."
+      - name: Check backend health and database
+        if: ${{ vars.VITE_API_URL != '' }}
+        env:
+          BACKEND_URL: ${{ vars.VITE_API_URL }}
+        run: |
+          set -euo pipefail
+          URL="${BACKEND_URL%/}/api/health"
+          echo "Checking ${URL}"
+          response="$(curl --fail --silent --show-error --retry 3 --retry-delay 5 --retry-connrefused --max-time 20 "${URL}")"
+          echo "${response}" | jq .
+          echo "${response}" | jq -e '.ok == true and .database == true' >/dev/null
